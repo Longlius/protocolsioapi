@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Longlius/protocolsioapi/issues"
   },
-  "homepage": "https://github.com/Longlius/protocolsioapi#readme"
+  "homepage": "https://github.com/Longlius/protocolsioapi#readme",
+  "dependencies": {
+    "encodeurl": "^1.0.1",
+    "request": "^2.79.0"
+  }
 }
