@@ -22,3 +22,27 @@ protocolsioapi.getProtocols('foo', null, function(error, result) {
 	}
 });
 ```
+
+You can get individual pages of results using the pageid argument:
+
+```javascript
+protocolsioapi.getProtocols('foo', '3', function(error, result) {
+	if(error){
+		console.log(error);
+	} else {
+		/// do something with result here
+	}
+});
+```
+
+Getting JSON metadata works similarly but requires a protocol id number:
+
+```javascript
+protocolsioapi.getProtocolJSON('5308', function(error, result) {
+	if(error) {
+		console.log(error);
+	} else {
+		// do something with the result
+	}
+});
+```
