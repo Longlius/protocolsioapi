@@ -28,7 +28,7 @@ class ProtocolsIO {
 			} else {
 				switch(response.statusCode) {
 					case 200:
-						callback(null,body);
+						callback(null, JSON.parse(body));
 						break;
 					default:
 						callback('UNSUPPORTED STATUS CODE: ${response.statusCode}', null);
@@ -46,7 +46,7 @@ class ProtocolsIO {
 			} else {
 				switch(response.statusCode) {
 					case 200:
-						callback(null, body);
+						callback(null, JSON.parse(body));
 						break;
 					default:
 						callback('UNSUPPORTED STATUS CODE: ${response.statusCode}', null);
@@ -75,8 +75,9 @@ class ProtocolsIO {
 }
 
 var test = function() {
+	var muhApiKey = process.env.PIO_API_KEY;
 	var protocols = new ProtocolsIO(muhApiKey);
-	protocols.getProtocolJSON('5038', function(error, result){
+	protocols.getProtocols('rat', null, function(error, result){
 			if(error) {
 				console.log(error);
 			} else {
@@ -84,4 +85,5 @@ var test = function() {
 			}
 	});
 };
+
 module.exports = ProtocolsIO;
