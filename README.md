@@ -9,7 +9,9 @@ First add it to your project with:
 
 Then import it into your code using:
 
-```var protocolsioapi = require('protocolsioapi');```
+```javascript
+var protocolsioapi = new require('protocolsioapi')();
+```
 
 To get a listing of all protocols matching a the keyword 'foo', use:
 
@@ -43,6 +45,18 @@ protocolsioapi.getProtocolJSON('5308', function(error, result) {
 		console.log(error);
 	} else {
 		// do something with the result
+	}
+});
+```
+
+And to get the PDF specification of the protocol:
+
+```javascript
+protocolsioapi.getProtocolPDF('5308', function(error, result) {
+	if(error) {
+		console.log(error);
+	} else {
+		// do something with the result (perhaps save it to the disk?)
 	}
 });
 ```
