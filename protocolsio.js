@@ -75,7 +75,6 @@ class ProtocolsIO {
 }
 
 var test = function() {
-	var muhApiKey = 'a133bf5894b63d3cbf0c5f9698aad215';
 	var protocols = new ProtocolsIO(muhApiKey);
 	protocols.getProtocolJSON('5038', function(error, result){
 			if(error) {
