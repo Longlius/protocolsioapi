@@ -13,11 +13,11 @@ Then import it into your code using:
 
 To get a listing of all protocols matching a the keyword 'foo', use:
 
-```protocolsioapi.getProtocols('foo', null, function(error, result) {
-		if(error) {
-			console.log(error);
-		} else {
-			/// do something with result here
-		}
-	});```
+```protocolsioapi.getProtocols('foo', null, function(error, result) {```
+```		if(error) {```
+```			console.log(error);```
+```		} else {```
+```			/// do something with result here```
+```		}```
+```	});```
 
