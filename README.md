@@ -10,7 +10,8 @@ First add it to your project with:
 Then import it into your code using:
 
 ```javascript
-var protocolsioapi = new require('protocolsioapi')();
+var ProtocolsIO = require('protocolsioapi');
+var protocolsioapi = new ProtocolsIO('<your api key here>');
 ```
 
 To get a listing of all protocols matching a the keyword 'foo', use:
