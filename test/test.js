@@ -1,16 +1,5 @@
-var assert = require('assert');
 var ProtocolsIO = require('../protocolsio.js');
 var apikey = process.env.PIO_API_KEY;
-
-// Helper function for verifying JSON
-function IsJsonString(str) {
-	try {
-		JSON.parse(str);
-	} catch (e) {
-		return false;
-	}
-	return true;
-}
 
 describe("ProtocolsIO", function() {
 	describe('#getProtocols()', function() {
