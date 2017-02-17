@@ -55,6 +55,33 @@ class ProtocolsIO {
 		});
 	}
 	
+	getProtocolJSONArray(protoidarr) {
+		var retValue = {};
+		var promiseArray = [];
+		var currentObjectInstance = this;
+		if(!Array.isArray(protoidarr)) {
+			throw Error("ERROR: getProtocolJSONArray() only accepts array arguments.");
+		} else {
+			for(let i = 0; i < protoidarr.length; ++i) {
+				promiseArray.push(new Promise(function(resolve, reject) {
+					currentObjectInstance.getProtocolJSON(protoidarr[i], function(error, result) {
+						if(error) {
+							reject(Error(error));
+						} else {
+							resolve([protoidarr[i],result]);
+						}
+					});
+				}));
+			}
+			Promise.all(promiseArray).then(protocols => {
+				protocols.map(function(protocol) {
+					retValue[protocol[0]] = protocol[1];
+				});
+			});
+			return retValue;
+		}
+	}
+	
 	getProtocolPDF(protoid, callback) {
 		var reqURL = encodeUrl('https://www.protocols.io/api/open/get_protocol_pdf?key=' + (this._apikey) + '&protocol_id=' + protoid);
 		request(reqURL, function(error, response, body) {
@@ -77,13 +104,10 @@ class ProtocolsIO {
 var test = function() {
 	var muhApiKey = process.env.PIO_API_KEY;
 	var protocols = new ProtocolsIO(muhApiKey);
-	protocols.getProtocols('rat', null, function(error, result){
-			if(error) {
-				console.log(error);
-			} else {
-				console.log(result);
-			}
-	});
+	var protoarr = protocols.getProtocolJSONArray(['5038', '4096', '1022']);
+	for(let prop in protoarr) {
+		console.log('Protocol ID: ' + prop + '\n\n' + JSON.stringify(protoarr[prop]) + '\n\n');
+	}
 };
 
 module.exports = ProtocolsIO;
