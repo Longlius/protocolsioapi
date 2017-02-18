@@ -66,7 +66,7 @@ class ProtocolsIO {
 				promiseArray.push(new Promise(function(resolve, reject) {
 					currentObjectInstance.getProtocolJSON(protoidarr[i], function(error, result) {
 						if(error) {
-							reject(Error(error));
+							resolve(null);
 						} else {
 							resolve({protoidarr: protoidarr[i], result: result});
 						}
@@ -78,6 +78,8 @@ class ProtocolsIO {
 					retValue[protocol.protoidarr] = protocol.result;
 				});
 				callback(null, retValue);
+			}).catch(function(err) {
+				callback(Error('Error: ' + err.message), null);
 			});
 		}
 	}
@@ -110,5 +112,4 @@ var test = function() {
 		}
 	});
 };
-
 module.exports = ProtocolsIO;
