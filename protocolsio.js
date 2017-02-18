@@ -68,7 +68,7 @@ var ProtocolsIO = function () {
 		}
 	}, {
 		key: 'getProtocolJSONArray',
-		value: function getProtocolJSONArray(protoidarr) {
+		value: function getProtocolJSONArray(protoidarr, callback) {
 			var retValue = {};
 			var promiseArray = [];
 			var currentObjectInstance = this;
@@ -81,7 +81,7 @@ var ProtocolsIO = function () {
 							if (error) {
 								reject(Error(error));
 							} else {
-								resolve([protoidarr[i], result]);
+								resolve({ protoidarr: protoidarr[i], result: result });
 							}
 						});
 					}));
@@ -92,10 +92,10 @@ var ProtocolsIO = function () {
 				}
 				Promise.all(promiseArray).then(function (protocols) {
 					protocols.map(function (protocol) {
-						retValue[protocol[0]] = protocol[1];
+						retValue[protocol.protoidarr] = protocol.result;
 					});
+					callback(null, retValue);
 				});
-				return retValue;
 			}
 		}
 	}, {
@@ -125,10 +125,11 @@ var ProtocolsIO = function () {
 var test = function test() {
 	var muhApiKey = process.env.PIO_API_KEY;
 	var protocols = new ProtocolsIO(muhApiKey);
-	var protoarr = protocols.getProtocolJSONArray(['5038', '4096', '1022']);
-	for (var prop in protoarr) {
-		console.log('Protocol ID: ' + prop + '\n\n' + JSON.stringify(protoarr[prop]) + '\n\n');
-	}
+	var protoarr = protocols.getProtocolJSONArray(['5038', '4096', '1022'], function (err, result) {
+		for (var prop in result) {
+			console.log('Protocol ID: ' + prop + '\n\n' + JSON.stringify(result[prop]) + '\n\n');
+		}
+	});
 };
 
 module.exports = ProtocolsIO;
