@@ -1,6 +1,8 @@
 # What is this?
 protocolsioapi is an NPM module that allows you easy access to the protocols.io REST api for searching protocols, retrieving metadata in JSON format, and downloading a PDF specification.
 
+If you enjoy using protocolsioapi, please check us out on [github](https://github.com/Longlius/protocolsioapi) or follow me on [twitter](https://twitter.com/Longlius).
+
 # How do I use it?
 
 First add it to your project with:
@@ -174,6 +176,20 @@ protocolsioapi.getProtocolJSON('5308', function(error, result) {
 		console.log(error);
 	} else {
 		// do something with the result
+	}
+});
+```
+
+You can retrieve multiple protocols' JSON at once using getProtocolJSONArray:
+
+```javascript
+protocolsioapi.getProtocolJSONArray(['5308', '4714', '2248'], function(error, result) {
+	if(error) {
+		console.log(error);
+	} else {
+		// result contains the JSON for each of the protocols, and the protocol ids are the keys
+		// for example, print the JSON for protocol 4714
+		console.log(result['4714']);
 	}
 });
 ```

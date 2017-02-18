@@ -60,7 +60,7 @@ class ProtocolsIO {
 		var promiseArray = [];
 		var currentObjectInstance = this;
 		if(!Array.isArray(protoidarr)) {
-			throw Error("ERROR: getProtocolJSONArray() only accepts array arguments.");
+			callback('ERROR: getProtocolJSONArray() only accepts arrays.', null);
 		} else {
 			for(let i = 0; i < protoidarr.length; ++i) {
 				promiseArray.push(new Promise(function(resolve, reject) {

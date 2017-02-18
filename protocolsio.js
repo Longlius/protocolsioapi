@@ -73,7 +73,7 @@ var ProtocolsIO = function () {
 			var promiseArray = [];
 			var currentObjectInstance = this;
 			if (!Array.isArray(protoidarr)) {
-				throw Error("ERROR: getProtocolJSONArray() only accepts array arguments.");
+				callback('ERROR: getProtocolJSONArray() only accepts arrays.', null);
 			} else {
 				var _loop = function _loop(i) {
 					promiseArray.push(new Promise(function (resolve, reject) {

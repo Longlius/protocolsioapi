@@ -44,4 +44,36 @@ describe("ProtocolsIO", function() {
 			});
 		});
 	});
+	
+	describe('#getProtocolJSONArray()', function() {
+		it('should fail when anything but an array is passed in', function(done) {
+			var protocolsioapi = new ProtocolsIO(apikey);
+			protocolsioapi.getProtocolJSONArray('5038', function(error, result) {
+				if(error) {
+					done();
+				} else {
+					done(Error('ERROR: getProtocolJSONArray did not fail when passed bad data'));
+				}
+			});
+		});
+		it('should return JSON for each of the protocol ids passed in', function(done) {
+			var protocolsioapi = new ProtocolsIO(apikey);
+			protocolsioapi.getProtocolJSONArray(['5038', '4714', '2248'], function(error, result) {
+				if(error) {
+					done(error);
+				} else {
+					if(result['2248'] == null) {
+						done(Error('ERROR: JSON not returned for id 2248'));
+					}
+					if(result['5038'] == null) {
+						done(Error('ERROR: JSON not returned for id 5038'));
+					}
+					if(result['4714'] == null) {
+						done(Error('ERROR: JSON not returned for id 4714'));
+					}
+					done()
+				}
+			});
+		});
+	});
 });
