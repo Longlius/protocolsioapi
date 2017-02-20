@@ -13,6 +13,7 @@
   },
   "author": "Matthew Longley",
   "license": "ISC",
+  "keywords": ["life science", "protocols.io", "science", "protocols"],
   "bugs": {
     "url": "https://github.com/Longlius/protocolsioapi/issues"
   },

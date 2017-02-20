@@ -76,4 +76,31 @@ describe("ProtocolsIO", function() {
 			});
 		});
 	});
+	
+	describe('#getProtocolPDFArray()', function() {
+		it('should fail when anything but an array is passed in', function(done) {
+			var protocolsioapi = new ProtocolsIO(apikey);
+			protocolsioapi.getProtocolPDFArray('5038', function(error, result) {
+				if(error) {
+					done();
+				} else {
+					done(Error('ERROR: getProtocolPDFArray did not fail when passed bad data'));
+				}
+			});
+		});
+		it('should return null for invalid protocol ids', function(done) {
+			var protocolsioapi = new ProtocolsIO(apikey);
+			protocolsioapi.getProtocolPDFArray(['5038', 'foo'], function(error, result) {
+				if(error) {
+					done(error);
+				} else {
+					if(result['foo'] != null) {
+						done(Error('Invalid protocol ID foo should be mapped to null.'));
+					} else {
+						done();
+					}
+				}
+			});
+		});
+	});
 });

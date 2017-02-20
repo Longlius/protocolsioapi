@@ -111,13 +111,58 @@ var ProtocolsIO = function () {
 				} else {
 					switch (response.statusCode) {
 						case 200:
-							callback(null, body);
+							var didCatch = false;
+							try {
+								var x = JSON.parse(body);
+							} catch (e) {
+								didCatch = true;
+								callback(null, body);
+							}
+							if (!didCatch) {
+								callback(null, null);
+							}
 							break;
 						default:
 							callback('UNSUPPORTED STATUS CODE: ${response.statusCode}', null);
 					}
 				}
 			});
+		}
+	}, {
+		key: 'getProtocolPDFArray',
+		value: function getProtocolPDFArray(protoidarr, callback) {
+			var retValue = {};
+			var promiseArray = [];
+			var currentObjectInstance = this;
+			if (!Array.isArray(protoidarr)) {
+				callback('ERROR: getProtocolPDFArray() only accepts arrays.', null);
+			} else {
+				var _loop2 = function _loop2(i) {
+					promiseArray.push(new Promise(function (resolve, reject) {
+						currentObjectInstance.getProtocolPDF(protoidarr[i], function (error, result) {
+							if (error) {
+								resolve(null);
+							} else if (result == null) {
+								resolve({ protoidarr: protoidarr[i], result: null });
+							} else {
+								resolve({ protoidarr: protoidarr[i], result: result });
+							}
+						});
+					}));
+				};
+
+				for (var i = 0; i < protoidarr.length; ++i) {
+					_loop2(i);
+				}
+				Promise.all(promiseArray).then(function (protocols) {
+					protocols.map(function (protocol) {
+						retValue[protocol.protoidarr] = protocol.result;
+					});
+					callback(null, retValue);
+				}).catch(function (err) {
+					callback(Error('Error: ' + err.message), null);
+				});
+			}
 		}
 	}]);
 
@@ -127,9 +172,12 @@ var ProtocolsIO = function () {
 var test = function test() {
 	var muhApiKey = process.env.PIO_API_KEY;
 	var protocols = new ProtocolsIO(muhApiKey);
-	var protoarr = protocols.getProtocolJSONArray(['5038', '4096', '1022'], function (err, result) {
-		for (var prop in result) {
-			console.log('Protocol ID: ' + prop + '\n\n' + JSON.stringify(result[prop]) + '\n\n');
+	var protoarr = protocols.getProtocolPDFArray(['5038', 'foo', '555'], function (err, result) {
+		if (err) {
+			console.log(err);
+		}
+		for (var i in result) {
+			console.log('Protocol ID: ' + i + '\tSize of PDF: ' + (typeof result[i] === 'string' ? result[i].length : 'N/A'));
 		}
 	});
 };

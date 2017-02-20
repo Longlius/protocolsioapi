@@ -205,3 +205,22 @@ protocolsioapi.getProtocolPDF('5308', function(error, result) {
 	}
 });
 ```
+
+You can even get multiple PDFs at once using getProtocolPDFArray:
+
+```javascript
+protocolsioapi.getProtocolPDFArray(['5308', '4714', '2248'], function(error, result) {
+	if(error) {
+		console.log(error);
+	} else {
+		// result contains the PDFs for each of the protocols, and the protocol ids are the keys
+		// for example, write the PDF for protocol 5308
+		fs.writeFile('5308.pdf', result['5308'], function(err) {
+			if(err) {
+				return console.log(err);
+			}
+			console.log('File 5308.pdf successfully written to disk.');
+		});
+	}
+});
+```
