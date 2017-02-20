@@ -6,6 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var request = require('request');
 var encodeUrl = require('encodeurl');
+var fs = require('fs');
 
 var ProtocolsIO = function () {
 	function ProtocolsIO(apikey) {
@@ -104,7 +105,7 @@ var ProtocolsIO = function () {
 		key: 'getProtocolPDF',
 		value: function getProtocolPDF(protoid, callback) {
 			var reqURL = encodeUrl('https://www.protocols.io/api/open/get_protocol_pdf?key=' + this._apikey + '&protocol_id=' + protoid);
-			request(reqURL, function (error, response, body) {
+			request({ url: reqURL, encoding: null }, function (error, response, body) {
 				if (error) {
 					callback(error, null);
 					return;
@@ -172,12 +173,16 @@ var ProtocolsIO = function () {
 var test = function test() {
 	var muhApiKey = process.env.PIO_API_KEY;
 	var protocols = new ProtocolsIO(muhApiKey);
-	var protoarr = protocols.getProtocolPDFArray(['5038', 'foo', '555'], function (err, result) {
-		if (err) {
-			console.log(err);
-		}
-		for (var i in result) {
-			console.log('Protocol ID: ' + i + '\tSize of PDF: ' + (typeof result[i] === 'string' ? result[i].length : 'N/A'));
+	var protopdf = protocols.getProtocolPDF('foo', function (error, result) {
+		if (error) {
+			console.log(error);
+		} else {
+			fs.writeFile('329.pdf', result, function (err) {
+				if (err) {
+					console.log(err);
+				}
+				console.log('File written successfully.');
+			});
 		}
 	});
 };
